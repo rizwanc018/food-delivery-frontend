@@ -9,7 +9,6 @@ const api = axios.create({
   timeout: 10000,
 });
 
-// Restaurant API
 export const restaurantApi = {
   getRestaurants: async (
     filters?: Partial<RestaurantFilters>, 
@@ -37,7 +36,6 @@ export const restaurantApi = {
   }
 };
 
-// Menu API
 export const menuApi = {
   getMenuItems: async (
     filters?: Partial<MenuItemFilters>,
@@ -64,10 +62,4 @@ export const menuApi = {
     const response = await api.get(`/menu/filters${queryString}`);
     return response.data;
   }
-};
-
-// Health check
-export const healthCheck = async (): Promise<{ status: string; message: string }> => {
-  const response = await api.get('/health', { baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000' });
-  return response.data;
 };

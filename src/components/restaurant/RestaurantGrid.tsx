@@ -1,4 +1,3 @@
-import React from 'react';
 import { Restaurant } from '@/types';
 import { RestaurantCard } from './RestaurantCard';
 import { Card, CardContent } from '@/components/ui/card';

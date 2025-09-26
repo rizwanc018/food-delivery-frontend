@@ -1,4 +1,3 @@
-import React from 'react';
 import { RestaurantFilters } from '@/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowUpDown } from 'lucide-react';

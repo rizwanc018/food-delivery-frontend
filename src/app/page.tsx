@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React from 'react';
-// import { useRestaurants } from '@/hooks/useRestaurants';
+import React, { Suspense } from 'react';
 import { useRestaurants } from '@/hooks/useRestaurants';
+import { useURLFilters } from '@/hooks/useURLFilters';
 import { SearchBar } from '@/components/filters/SearchBar';
 import { FilterSidebar } from '@/components/filters/FilterSidebar';
 import { SortOptions } from '@/components/filters/SortOptions';
@@ -13,25 +13,22 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 
-export default function HomePage() {
+function HomePageContent() {
+  const { filters, updateFilters, clearFilters, updatePage, currentPage } = useURLFilters();
   const {
     restaurants,
     loading,
     error,
     pagination,
-    filterOptions,
-    filters,
-    updateFilters,
-    clearFilters,
-    loadPage
-  } = useRestaurants();
+    filterOptions
+  } = useRestaurants({ filters, currentPage });
 
   const handleSearchChange = (search: string) => {
-    updateFilters({ search });
+    updateFilters({ ...filters, search });
   };
 
   const handleSortChange = (sortBy: any, sortOrder: any) => {
-    updateFilters({ sortBy, sortOrder });
+    updateFilters({ ...filters, sortBy, sortOrder });
   };
 
   if (error) {
@@ -124,12 +121,20 @@ export default function HomePage() {
             {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
               <div className="mt-8">
-                <Pagination pagination={pagination} onPageChange={loadPage} />
+                <Pagination pagination={pagination} onPageChange={updatePage} />
               </div>
             )}
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50/50 flex items-center justify-center">Loading...</div>}>
+      <HomePageContent />
+    </Suspense>
   );
 }

@@ -3,43 +3,30 @@ import { Restaurant, RestaurantFilters, FilterOptions, PaginationInfo } from '@/
 import { restaurantApi } from '@/lib/api';
 import { useDebounce } from 'use-debounce';
 
+interface UseRestaurantsProps {
+  filters: Partial<RestaurantFilters>;
+  currentPage: number;
+}
+
 interface UseRestaurantsReturn {
   restaurants: Restaurant[];
   loading: boolean;
   error: string | null;
   pagination: PaginationInfo | null;
   filterOptions: FilterOptions | null;
-  filters: Partial<RestaurantFilters>;
-  updateFilters: (newFilters: Partial<RestaurantFilters>) => void;
-  clearFilters: () => void;
-  loadPage: (page: number) => void;
 }
 
-const initialFilters: Partial<RestaurantFilters> = {
-  cuisine: [],
-  priceRange: [],
-  rating: 0,
-  deliveryTime: '',
-  isVeg: false,
-  location: [],
-  search: '',
-  sortBy: 'rating',
-  sortOrder: 'desc'
-};
 
-export function useRestaurants(): UseRestaurantsReturn {
+export function useRestaurants({ filters, currentPage }: UseRestaurantsProps): UseRestaurantsReturn {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState<PaginationInfo | null>(null);
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
-  const [filters, setFilters] = useState<Partial<RestaurantFilters>>(initialFilters);
-  const [currentPage, setCurrentPage] = useState(1);
 
-  // Debounce search to avoid too many API calls
   const [debouncedSearch] = useDebounce(filters.search, 300);
 
-  const fetchRestaurants = useCallback(async (page: number = 1) => {
+  const fetchRestaurants = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -49,11 +36,11 @@ export function useRestaurants(): UseRestaurantsReturn {
         search: debouncedSearch
       };
 
-      const response = await restaurantApi.getRestaurants(filtersToSend, page, 12);
-      
+      const response = await restaurantApi.getRestaurants(filtersToSend, currentPage, 12);
+
       setRestaurants(response.data);
       setPagination(response.pagination || null);
-      
+
       if (response.filters) {
         setFilterOptions(response.filters);
       }
@@ -63,7 +50,7 @@ export function useRestaurants(): UseRestaurantsReturn {
     } finally {
       setLoading(false);
     }
-  }, [filters, debouncedSearch]);
+  }, [filters, debouncedSearch, currentPage]);
 
   const fetchFilterOptions = useCallback(async () => {
     try {
@@ -74,42 +61,20 @@ export function useRestaurants(): UseRestaurantsReturn {
     }
   }, []);
 
-  // Initial load
   useEffect(() => {
     fetchFilterOptions();
   }, [fetchFilterOptions]);
 
-  // Fetch restaurants when filters or search change
   useEffect(() => {
-    setCurrentPage(1);
-    fetchRestaurants(1);
+    fetchRestaurants();
   }, [fetchRestaurants]);
 
-  const updateFilters = useCallback((newFilters: Partial<RestaurantFilters>) => {
-    setFilters(prev => ({
-      ...prev,
-      ...newFilters
-    }));
-  }, []);
-
-  const clearFilters = useCallback(() => {
-    setFilters(initialFilters);
-  }, []);
-
-  const loadPage = useCallback((page: number) => {
-    setCurrentPage(page);
-    fetchRestaurants(page);
-  }, [fetchRestaurants]);
 
   return {
     restaurants,
     loading,
     error,
     pagination,
-    filterOptions,
-    filters,
-    updateFilters,
-    clearFilters,
-    loadPage
+    filterOptions
   };
 }
