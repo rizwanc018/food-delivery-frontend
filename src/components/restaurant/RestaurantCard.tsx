@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Restaurant } from '@/types';
 import { Card, CardContent,  } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, Clock, Truck, DollarSign, Utensils, Leaf } from 'lucide-react';
+import { Star, Clock, Truck,  Leaf } from 'lucide-react';
 import { formatPrice, formatRating, getPriceRangeColor, getCuisineColor } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -13,14 +13,14 @@ interface RestaurantCardProps {
 export function RestaurantCard({ restaurant }: RestaurantCardProps) {
   return (
     <Link href={`/restaurant/${restaurant.id}`}>
-      <Card className="group cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+      <Card className="group cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 py-0 h-full">
         <div className="relative">
           <Image
           width={192}
           height={192}
             src={restaurant.image}
             alt={restaurant.name}
-            className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-48 w-full object-cover transition-transform duration-300 "
           />
           {!restaurant.isOpen && (
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -66,7 +66,7 @@ export function RestaurantCard({ restaurant }: RestaurantCardProps) {
               )}
             </div>
 
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <div className="flex items-center justify-between text-sm text-muted-foreground mt-auto">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
@@ -83,7 +83,7 @@ export function RestaurantCard({ restaurant }: RestaurantCardProps) {
               </Badge>
             </div>
 
-            <div className="flex items-center justify-between pt-2 border-t">
+            {/* <div className="flex items-center justify-between pt-2 border-t">
               <div className="flex items-center gap-1 text-sm">
                 <DollarSign className="w-4 h-4" />
                 <span>Min {formatPrice(restaurant.minOrder)}</span>
@@ -95,7 +95,7 @@ export function RestaurantCard({ restaurant }: RestaurantCardProps) {
                   <span>{restaurant._count.menuItems} items</span>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         </CardContent>
       </Card>

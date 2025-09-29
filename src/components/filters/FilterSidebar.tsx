@@ -80,7 +80,7 @@ export function FilterSidebar({
                             variant="ghost"
                             size="sm"
                             onClick={onClearFilters}
-                            className="h-8 px-2 text-muted-foreground hover:text-foreground"
+                            className="h-8 px-2 text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                             <X className="w-4 h-4 mr-1" />
                             Clear
@@ -103,7 +103,7 @@ export function FilterSidebar({
                             max={5}
                             min={0}
                             step={0.5}
-                            className="w-full"
+                            className="w-full cursor-pointer"
                         />
                         <div className="flex justify-between text-sm text-muted-foreground">
                             <span>0</span>
@@ -126,10 +126,11 @@ export function FilterSidebar({
                             id="vegetarian"
                             checked={filters.isVeg || false}
                             onCheckedChange={handleVegChange}
+                            className="cursor-pointer"
                         />
                         <label
                             htmlFor="vegetarian"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                         >
                             Vegetarian Only
                         </label>
@@ -155,10 +156,11 @@ export function FilterSidebar({
                                             onCheckedChange={(checked) =>
                                                 handleCuisineChange(cuisine, checked as boolean)
                                             }
+                                            className="cursor-pointer"
                                         />
                                         <label
                                             htmlFor={cuisine}
-                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                                         >
                                             {cuisine}
                                         </label>
@@ -187,10 +189,11 @@ export function FilterSidebar({
                                             onCheckedChange={(checked) =>
                                                 handlePriceRangeChange(priceRange, checked as boolean)
                                             }
+                                            className="cursor-pointer"
                                         />
                                         <label
                                             htmlFor={priceRange}
-                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize"
+                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize cursor-pointer"
                                         >
                                             {priceRange.replace("-", " ")}
                                         </label>
@@ -218,10 +221,11 @@ export function FilterSidebar({
                                         onCheckedChange={(checked) =>
                                             handleLocationChange(location, checked as boolean)
                                         }
+                                        className="cursor-pointer"
                                     />
                                     <label
                                         htmlFor={location}
-                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                                     >
                                         {location}
                                     </label>

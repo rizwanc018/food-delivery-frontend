@@ -39,6 +39,7 @@ export function useURLFilters() {
                     });
                 } else if (key === "isVeg") {
                     if (value === true) params.set("veg", "true");
+                    else params.delete("veg");
                 } else if (key === "rating") {
                     if (value && Number(value) > 0) params.set("rating", value.toString());
                 } else if (value && value !== "" && value !== "desc") {
